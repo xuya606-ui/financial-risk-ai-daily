@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>2026-09-11 风控指标学习卡</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;max-width:1100px;margin:36px auto;padding:0 20px;line-height:1.72;color:#1f2937}h1,h2{color:#111827}a{color:#2563eb;text-decoration:none}.card{border:1px solid #e5e7eb;border-radius:14px;padding:20px;margin:18px 0}.hero{background:#f8fafc}.metric{background:#ecfdf5}.formula{display:block;background:#f3f4f6;padding:10px;margin:8px 0;border-radius:6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.step{padding:6px 0;border-bottom:1px dashed #d1d5db}.step:last-child{border-bottom:0}.muted{color:#6b7280}details{margin-top:8px}summary{font-weight:700;cursor:pointer}</style></head><body>
+<p><a href="index.html">← 返回首页</a> · <a href="risk-metrics.html">主指标字典</a> · <a href="reports/2026-09-11.html">今日风控日报</a></p>
+<div class="card hero"><h1>2026-09-11 风控指标学习卡</h1><p>主题：Fraud Thresholding & Cost-sensitive Decisioning。今天把Fraud Capture/Recall、FPR、FNR、Precision/PPV四个高频指标补齐为统一12段学习卡。所有数值阈值仅为内部示例，不是行业统一标准。</p></div>
+
+<div class="card metric"><h2>1. Fraud Capture Rate / Recall｜欺诈捕获率 / 召回率</h2>
+<p><strong>1）指标是什么：</strong>真实Fraud里有多少被模型/规则成功识别并进入定义好的阻断或处置范围。大白话：真正的坏人里，我们抓住了多少。</p>
+<p><strong>2）为什么重要：</strong>属于贷前/欺诈阶段的滞后Outcome指标，因为需要成熟Fraud标签才能确认。它回答漏掉风险的程度，是阈值、模型、规则和Case流程效果的核心衡量，但不是单独的经济价值指标。</p>
+<p><strong>3）精确定义与公式：</strong><span class="formula">Recall = TP ÷ (TP + FN)</span>TP=真实Fraud且被预测/判定为Fraud；FN=真实Fraud但未被识别。必须固定Fraud Definition、标签成熟窗口（如D+30/60或Chargeback成熟）、预测时点、用户/订单口径，以及“识别”到底指Hard Decline、Review还是任何Alert。金额Recall可定义为被捕获Fraud金额÷全部真实Fraud金额，必须与件数口径分开。</p>
+<p><strong>4）如何看高低：</strong>通常越高说明漏掉的Fraud更少，但并非越高越好。把阈值降得很低可以机械提高Recall，却可能大幅提高FPR、Review量和好客误杀。Recall上升必须与Precision、FPR、Net Fraud Loss和Contribution Margin一起看。</p>
+<div><strong>5）墨西哥现金贷案例：</strong><div class="step"><strong>背景：</strong>50,000个成熟首贷申请，Fraud prevalence 4%，比较阈值A与更激进的B。</div><div class="step"><strong>数据：</strong>真实Fraud 2,000；A抓1,560，Recall 78%，拒绝6,000；B抓1,800，Recall90%，拒绝9,000；平均Fraud损失MXN900；Good边际贡献MXN100。</div><div class="step"><strong>现象：</strong>B的Recall提高12pp，多抓240个Fraud。</div><div class="step"><strong>拆解：</strong>Channel C×新设备新增捕获贡献最高，但稳定设备/中高信用Score的误杀显著增加。</div><div class="step"><strong>根因：</strong>确认B通过更宽阈值提高Recall；但“更优”并未得到证明，因为同时增加大量False Positive。</div><div class="step"><strong>决策：</strong>高风险设备群保留B，稳定低风险群回A，中间灰区Step-up。</div><div class="step"><strong>结果：</strong>等待两个成熟Fraud/FPD7 Cohort，看Net Fraud Loss下降且Approval/Margin不被过度侵蚀才判定成功。</div></div>
+<p><strong>6）诊断逻辑：</strong>①先核Fraud标签成熟度/定义；②看Fraud Base Rate是否变化；③按Channel×Device×Score看Recall；④同时看FNR/FPR/Precision；⑤落到Fraud Loss、Approval、Review和Margin。</p>
+<p><strong>7）策略动作：</strong>Recall下降且FNR升高：加强高风险Segment阈值/规则、补充身份和设备信号；Recall升但FPR恶化：将灰区从Hard Decline改Step-up/Review；特定渠道漏Fraud：渠道独立阈值或降量；模型整体漂移：校准/Challenger而非盲目加规则。</p>
+<p><strong>8）常见误区：</strong>把Alert当TP；未成熟Fraud标签计算Recall；只看件数不看金额；Recall越高越好；不同Fraud Definition/窗口直接横比。</p>
+<p><strong>9）推荐拆分维度：</strong>Channel、Campaign、Fraud Type、Device、KYC Vendor、Credit Score、Limit、Term、新老客、Region、Model/Rule Version。</p>
+<p><strong>10）预警方式：</strong>使用同标签成熟期、同模型版本的历史分布。示例内部黄灯：连续两个成熟Cohort Recall低于历史P10且FNR/净Fraud损失同步恶化；样本量不足时只提示观察。阈值不是行业统一标准。</p>
+<p><strong>11）与其他指标关系：</strong>Fraud Base Rate → Model Score/Threshold → Recall ↔ FNR → Prevented Fraud Loss；同时Threshold → FPR → Approval/Review → Lost Good Margin。组合链：<strong>Recall + FPR + Precision → Net Fraud Loss → Contribution Margin</strong>。</p>
+<details><summary>12）小练习与答案</summary><p>真实Fraud 1,000个，模型抓到850个。Recall是多少？如果为抓到920个Fraud同时多误拒5,000个Good，能否只凭Recall选择新阈值？</p><p><strong>答案：</strong>Recall=85%。不能只凭Recall选择，需要计算新增70个TP的避免损失与5,000个Good误杀成本、Review/投诉和Margin。</p></details></div>
+
+<div class="card metric"><h2>2. False Positive Rate / FPR｜假阳性率 / 好客误杀率</h2>
+<p><strong>1）指标是什么：</strong>真实Good客户里被错误判成Fraud的比例。大白话：真正没问题的人里，我们误伤了多少。</p>
+<p><strong>2）为什么重要：</strong>属于贷前/欺诈阶段的滞后Outcome指标，需要成熟Good/Fraud标签。它直接影响Approval、客户体验、复借、投诉与收入，是“多抓Fraud”的主要代价指标。</p>
+<p><strong>3）精确定义与公式：</strong><span class="formula">FPR = FP ÷ (FP + TN)</span>FP=真实Good却被预测/处置为Fraud；TN=真实Good且正确通过。分母是全部真实Good，不是全部被拒绝的人。要固定成熟窗口、Good定义、Decision Action、订单/用户口径。金额FPR通常不常用，但可补充被误阻断的预计EAD/Contribution Margin。</p>
+<p><strong>4）如何看高低：</strong>一般越低越好，但极低FPR可能来自策略过松并造成高FNR。尤其Fraud Base Rate很低时，即使FPR只有5%-10%，由于Good数量巨大，FP绝对量仍可能远大于TP。</p>
+<div><strong>5）墨西哥现金贷案例：</strong><div class="step"><strong>背景：</strong>同一50,000申请，真实Good 48,000。</div><div class="step"><strong>数据：</strong>A拒6,000，其中TP1,560、FP4,440，FPR=9.25%；B拒9,000，其中TP1,800、FP7,200，FPR=15%。Approval同步下降约6pp。</div><div class="step"><strong>现象：</strong>B多抓240个Fraud，但新增误伤2,760个Good。</div><div class="step"><strong>拆解：</strong>误伤集中在稳定设备、中高Credit Score与Repeat-like行为Segment。</div><div class="step"><strong>根因：</strong>阈值放宽是FPR上升的直接机制；但特定Segment误报还需排查Device Vendor与身份字段漂移。</div><div class="step"><strong>决策：</strong>这些低风险Segment使用更高Hard-Decline阈值，灰区Step-up。</div><div class="step"><strong>结果：</strong>观察Approval恢复、投诉下降且Fraud Loss无显著反弹。</div></div>
+<p><strong>6）诊断逻辑：</strong>①确认Good成熟标签；②看FP绝对量和FPR；③按Reason/Model/Channel/Device定位误报；④与Precision/Recall联动；⑤量化Lost Good Margin与Complaint。</p>
+<p><strong>7）策略动作：</strong>特定Rule FPR高：缩窄阈值/降级Step-up；Vendor漂移：修字段/重校准；好客价值高：增加白名单/可信设备/历史还款信号；高FPR且Recall增量低：直接进入下线Challenger。</p>
+<p><strong>8）常见误区：</strong>把FP÷全部Decline当FPR（那更接近1-Precision）；把尚未出Fraud标签的用户都当Good；只看FPR百分比忽略Good基数；用投诉率替代FPR。</p>
+<p><strong>9）推荐拆分维度：</strong>Rule/Model、Channel、Device、Score、Limit、KYC结果、新老客、Region、Reviewer、Strategy Version。</p>
+<p><strong>10）预警方式：</strong>建立同模型/同Fraud窗口稳定基线，同时设置FP绝对量与预计Lost Margin门槛。示例内部黄灯：FPR连续两个成熟Cohort超历史P90且Recall没有相应提升；非行业统一标准。</p>
+<p><strong>11）与其他指标关系：</strong>Threshold降低 → FPR↑ → Approval↓ / Review↑ → Lost Good Margin↑ / Complaint↑；与Recall形成权衡。链路：<strong>FPR → Approval/Take-up → EAD/LTV → Contribution Margin</strong>。</p>
+<details><summary>12）小练习与答案</summary><p>真实Good 20,000，误拒1,200，FPR是多少？如果Precision仍很高，FPR是否一定可接受？</p><p><strong>答案：</strong>6%。不一定，仍需看1,200个Good的价值、投诉、渠道结构和Recall增量。</p></details></div>
+
+<div class="card metric"><h2>3. False Negative Rate / FNR｜假阴性率 / 欺诈漏判率</h2>
+<p><strong>1）指标是什么：</strong>真实Fraud里被系统误判为正常、因此漏掉的比例。大白话：真正的欺诈里，我们漏了多少。</p>
+<p><strong>2）为什么重要：</strong>贷前/欺诈阶段滞后Outcome指标，直接连接真实Fraud Loss。对于同一个二分类标签、同一成熟窗口，FNR=1-Recall；但业务上仍值得单独展示，因为它更贴近“漏损”语言。</p>
+<p><strong>3）精确定义与公式：</strong><span class="formula">FNR = FN ÷ (TP + FN) = 1 − Recall</span>必须固定Fraud Definition、预测时点和Action定义。如果Review后抓住Fraud，需明确算模型初始FNR还是最终Decision FNR。金额FNR可用漏掉Fraud金额÷全部Fraud金额衡量。</p>
+<p><strong>4）如何看高低：</strong>通常越低越好；但把FNR压到极低通常需要牺牲FPR/Approval。件数FNR下降也不代表金额风险下降，如果漏掉的是高EAD账户，金额FNR可能仍高。</p>
+<div><strong>5）墨西哥现金贷案例：</strong><div class="step"><strong>背景：</strong>A阈值真实Fraud 2,000。</div><div class="step"><strong>数据：</strong>A漏440，FNR22%；B漏200，FNR10%；但A漏Fraud平均EAD MXN1,100，B剩余漏Fraud平均EAD MXN2,200。</div><div class="step"><strong>现象：</strong>件数FNR大幅改善，但剩余漏Fraud更集中在高金额。</div><div class="step"><strong>拆解：</strong>高Limit+Bank Change+可信设备伪装群体仍容易漏掉。</div><div class="step"><strong>根因：</strong>阈值能压低一般Fraud漏判，但缺少账户变化/受益人风险信号导致高金额Fraud仍未识别。</div><div class="step"><strong>决策：</strong>不是继续全量降阈值，而是对高EAD+Bank Change增加Step-up/Beneficiary验证。</div><div class="step"><strong>结果：</strong>同步看件数FNR、金额FNR、Net Fraud Loss和FPR。</div></div>
+<p><strong>6）诊断逻辑：</strong>①标签/成熟度；②件数FNR vs 金额FNR；③漏Fraud Type；④Channel×Device×Bank Change×Limit；⑤数据缺失/模型盲区。</p>
+<p><strong>7）策略动作：</strong>高金额FNR：加EAD/账户变化控制；特定Fraud Type漏判：增加相应图谱/设备/支付信号；全局FNR恶化且PSI高：模型重校准或重训；FNR低但FPR爆炸：提高阈值并用Step-up承接灰区。</p>
+<p><strong>8）常见误区：</strong>只报件数FNR；把尚未确认Fraud的损失漏记；模型FNR与最终Decision FNR混用；看到FNR高就无差别收紧所有客群。</p>
+<p><strong>9）推荐拆分维度：</strong>Fraud Type、Amount/EAD、Channel、Device、Bank Change、Score、Limit、Region、Model Version、Decision Stage。</p>
+<p><strong>10）预警方式：</strong>件数与金额FNR双轨，同成熟Cohort比较。示例内部红灯候选：金额FNR连续两个成熟Cohort显著高于历史稳定区间且Net Fraud Loss同步升高；需满足样本量门槛。</p>
+<p><strong>11）与其他指标关系：</strong>Recall=1-FNR；FNR × Fraud EAD × LGD/不可追回比例 → Fraud Loss。链路：<strong>FNR → Fraud Loss → Recovery → Net Fraud Loss → Margin</strong>。</p>
+<details><summary>12）小练习与答案</summary><p>Fraud共500个，TP=425，FN=75。FNR是多少？</p><p><strong>答案：</strong>15%，Recall=85%。还应查看75个FN的金额和类型。</p></details></div>
+
+<div class="card metric"><h2>4. Precision / Positive Predictive Value｜查准率 / 阳性预测值</h2>
+<p><strong>1）指标是什么：</strong>所有被系统判成Fraud的人里，最终真正是Fraud的比例。大白话：我们“喊抓人”的这些人里，究竟有多少真的有问题。</p>
+<p><strong>2）为什么重要：</strong>贷前/欺诈阶段滞后Outcome指标，直接衡量Alert/Decline/Review队列的纯度，决定人工审核效率和误杀成本。它受Fraud Base Rate显著影响，因此不能脱离样本分布比较。</p>
+<p><strong>3）精确定义与公式：</strong><span class="formula">Precision = TP ÷ (TP + FP)</span>分母是所有被预测Fraud的样本。必须固定“阳性”的Action定义（Alert/Review/Decline）、标签成熟度、用户/订单口径。若比较Case队列，还可定义Case Precision=Confirmed Fraud Cases÷Matured Reviewed Cases。</p>
+<p><strong>4）如何看高低：</strong>通常越高说明处置队列更纯，但极高Precision也可能因为阈值过严而漏掉大量Fraud（FNR高）。Fraud Base Rate上升本身也会推高Precision，即使模型没有变好。</p>
+<div><strong>5）墨西哥现金贷案例：</strong><div class="step"><strong>背景：</strong>仍使用A/B阈值。</div><div class="step"><strong>数据：</strong>A TP=1,560、FP=4,440，Precision=26%；B TP=1,800、FP=7,200，Precision=20%；B Recall更高。</div><div class="step"><strong>现象：</strong>B抓更多Fraud，但处置队列更“脏”，每5个被判Fraud的人只有1个最终确认Fraud。</div><div class="step"><strong>拆解：</strong>低Precision主要来自稳定设备+中高Credit Score的Good用户。</div><div class="step"><strong>根因：</strong>阈值扩大了覆盖面，边际进入队列的用户Fraud密度更低；同时需排除Fraud Base Rate变化。</div><div class="step"><strong>决策：</strong>高Precision强信号Hard Decline；中等Precision组合Review/Step-up；低Precision单一弱信号降级。</div><div class="step"><strong>结果：</strong>观察Case Capacity、Review Cost、Fraud Loss、Approval和投诉。</div></div>
+<p><strong>6）诊断逻辑：</strong>①Fraud Base Rate；②TP/FP定义；③按Rule/Score Bucket看Precision；④同时看Recall/FPR；⑤把Review Cost与Lost Margin计入。</p>
+<p><strong>7）策略动作：</strong>低Precision高量规则：收窄/合并；低Precision但能抓高金额Fraud：保留为Step-up而非硬拒；Reviewer队列Precision低：优化Case Priority；高Precision低Recall：增加第二层模型/规则覆盖。</p>
+<p><strong>8）常见误区：</strong>Precision与FPR混淆；Fraud Base Rate不同的渠道直接横比；只看Precision不看Recall；把未成熟Good当FP。</p>
+<p><strong>9）推荐拆分维度：</strong>Rule/Alert Type、Model Score Band、Channel、Device、KYC Vendor、Fraud Type、Limit、Region、Reviewer、Strategy Version。</p>
+<p><strong>10）预警方式：</strong>同Base Rate近似样本/同成熟窗口比较；Case队列Precision连续下降且Backlog/Cost上升可作为内部黄灯，若Fraud Loss也升则升级。阈值必须内部校准。</p>
+<p><strong>11）与其他指标关系：</strong>Fraud Base Rate + Threshold → Precision；Precision × Alert Volume决定Case中有效Fraud数量。组合链：<strong>Alert Volume × Precision → Confirmed Fraud → Prevented Loss；同时FP → FPR → Lost Good Margin</strong>。</p>
+<details><summary>12）小练习与答案</summary><p>一个规则拒绝2,000人，其中400人最终确认Fraud。Precision是多少？若另一个规则Precision为35%但只抓到全部Fraud的20%，哪个更好？</p><p><strong>答案：</strong>20%。不能仅凭Precision选规则，需要同时比较Recall、FPR、Fraud金额和经济价值。</p></details></div>
+
+<p class="muted">学习卡用于内部分析与培训。业务示例为模拟数字，不构成行业统一阈值或个别信贷建议。</p></body></html>
