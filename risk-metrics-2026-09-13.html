@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>2026-09-13｜复借生命周期风控指标学习卡</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;max-width:1120px;margin:36px auto;padding:0 20px;line-height:1.72;color:#1f2937}h1,h2,h3{color:#111827}a{color:#2563eb;text-decoration:none}.card{border:1px solid #e5e7eb;border-radius:14px;padding:20px;margin:18px 0}.hero{background:#f8fafc}.metric{background:#ecfdf5}.tag{display:inline-block;background:#f3f4f6;border-radius:999px;padding:3px 10px;margin:3px;font-size:13px}.formula{display:block;background:#f3f4f6;padding:10px;margin:8px 0;border-radius:6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.muted{color:#6b7280}details{margin-top:8px}summary{cursor:pointer;font-weight:700}</style></head><body>
+<p><a href="index.html">← 返回首页</a> · <a href="risk-metrics.html">主指标字典</a> · <a href="risk-learning.html">海外风控知识库</a> · <a href="reports/2026-09-13.html">今日风控日报</a></p>
+<div class="card hero"><span class="tag">2026-09-13</span><span class="tag">完整12段学习卡</span><h1>复借生命周期指标：Repeat Rate / Repeat Approval / Repeat Bad@MOB / Risk-adjusted LTV</h1><p>今天把复借增长、复借信用表现和生命周期价值放在同一套指标体系中。所有阈值仅作为内部分析思路，不冒充行业统一标准；案例数字为模拟数据。</p></div>
+
+<div class="card metric"><h2>Repeat Rate｜Repeat Borrowing Rate｜复借率</h2>
+<p><strong>1）指标是什么：</strong>同一客户在首贷或上一Cycle结束后，再次获得并实际使用贷款的比例。大白话：<strong>这一批客户里，最后有多少人又借了一次。</strong></p>
+<p><strong>2）为什么重要：</strong>这是生命周期增长的同步/滞后指标，决定首贷获客成本能否被后续Cycle摊薄，是LTV的重要上游。但复借率高并不自动意味着客户质量高，因为资金紧张、优惠刺激或冷静期过短也会提高复借。</p>
+<p><strong>3）精确定义与公式：</strong>建议至少同时维护两个口径，不能混用：<span class="formula">Repeat Rate (Origination Cohort, N days) = N天内再次放款的唯一用户 ÷ 已成熟到N天的首贷放款唯一用户</span><span class="formula">Repeat Take-up = 实际复借放款/接受Offer的唯一用户 ÷ 已获得且看到有效复借Offer的Eligible唯一用户</span>必须固定N天观察窗、Eligibility定义、Offer有效期、唯一用户口径、Cycle编号；同一用户多笔不能重复计数。</p>
+<p><strong>4）如何看高低：</strong>高通常意味着客户回流和产品使用增强，但可能由高风险资金需求、过度营销、高优惠或提额驱动；低可能是产品吸引力弱，也可能是复借风险门槛更稳健。因此必须同时看Repeat Bad、金额FPD、EL和Cycle Margin。</p>
+<p><strong>5）墨西哥七步案例：</strong><strong>背景：</strong>30天首贷，结清后自动展示复借Offer。<strong>数据：</strong>首贷放款10,000人；5,500人达到复借资格；3,850人实际复借；Origination Cohort Repeat=38.5%，Eligible Repeat=70%；Channel C低Score客户Eligible Repeat=75%，Cycle2 FPD7=18%，整体Cycle2 FPD7=12%；Avg Limit由1,500升至2,100。<strong>现象：</strong>整体复借强，但高复借集中在高风险边缘客。<strong>拆解：</strong>Channel×首贷Score×Limit×Days-since-payoff×策略版本。<strong>根因：</strong>复借需求和提额同时变化，只能确认相关性，不能把高Bad完全归因于Repeat Rate。<strong>决策：</strong>低Score、短结清间隔、近期多头客降低Offer/Limit；稳定中高Score保留。<strong>结果：</strong>观察两个成熟Cycle的Repeat Bad@MOB、EL、Amount FPD和Cum LTV。</p>
+<p><strong>6）诊断逻辑：</strong>①先核对Eligibility与观察窗；②看Offer Exposure/技术触达；③看Apply→Approval→Disbursement；④按Channel/Score/Limit拆Repeat；⑤联动Cycle FPD/Bad/EL/LTV。</p>
+<p><strong>7）策略动作：</strong>曝光低但优质客多→优化召回/Offer；高风险客Repeat高→降额、延长冷静期、重新征信/多头检查；高Repeat但Margin低→减少优惠/高成本Funding；技术失败→先修Offer/支付链路。</p>
+<p><strong>8）常见误区：</strong>把Eligible当全部首贷客户；未成熟Cohort进入分母；同一用户多笔重复计数；把Repeat Rate和Offer Take-up混成同一指标；看到高Repeat就直接提额。</p>
+<p><strong>9）推荐拆分维度：</strong>Acquisition Channel、Campaign、首贷Score、Cycle、Limit、Term、Days-since-payoff、Prior DPD、Region、Device、Strategy Version、Coupon。</p>
+<p><strong>10）预警方式：</strong>优先同首贷Vintage、同N天观察窗比较，并设置最小Eligible/放款样本量。内部黄灯示例：Repeat明显上升，但连续两个成熟Cycle的Amount Bad/EL同步恶化；若Cycle Margin转负则升级。数值阈值应来自自身历史分布。</p>
+<p><strong>11）与其他指标关系：</strong><span class="formula">First-loan Cure → Eligibility → Offer Exposure → Repeat Rate → Limit/EAD → Repeat Bad → Cycle Margin → LTV</span></p>
+<details><summary>12）小练习与答案</summary><p>首贷成熟用户8,000人，Eligible 4,000人，看到Offer 3,600人，实际复借2,520人。Origination Cohort Repeat、Eligible Repeat、Exposed Take-up分别是多少？</p><p><strong>答案：</strong>31.5%、63%、70%。三个分母不同，不能只报一个“复借率”。</p></details></div>
+
+<div class="card metric"><h2>Repeat Approval Rate｜复借审批通过率</h2>
+<p><strong>1）指标是什么：</strong>真正进入复借重新决策流程的申请中，被最终批准的比例。大白话：<strong>回来申请第二/第三借的人，有多少真正通过了最新风控。</strong></p>
+<p><strong>2）为什么重要：</strong>是贷前同步指标，用于判断复借风险偏好是否过松，以及团队是否把“首贷还清”错误当成永久低风险。它决定后续Limit/EAD与Repeat Bad。</p>
+<p><strong>3）精确定义与公式：</strong><span class="formula">Repeat Approval Rate = 最终批准的复借唯一申请 ÷ 实际完成复借重新决策的Eligible复借唯一申请</span>自动预授信、Eligibility、Offer展示、申请提交、Credit/Fraud决策必须分层；固定Cycle、策略版本、用户/订单去重和技术失败处理。</p>
+<p><strong>4）如何看高低：</strong>高可能是客户经过首贷筛选后质量更好，也可能是重评不足、规则过松或提额放宽。低可能是风险收紧，也可能是征信/数据Vendor故障。</p>
+<p><strong>5）墨西哥七步案例：</strong><strong>背景：</strong>复借V6将首贷结清客大量自动预授信。<strong>数据：</strong>Repeat Approval 88%→94%；Avg Limit +45%；Cycle2 FPD7 9%→13%；金额FPD11%→17%；Inquiry>3次/月客群占比10%→18%；Contribution Margin/loan 145→108。<strong>现象：</strong>审批提高但金额风险和利润变差。<strong>拆解：</strong>Prior DPD×最新Inquiry×Score×Limit Increase。<strong>根因：</strong>策略与客群变化同步，不能认定单一原因，但“近期多头+高提额”是强风险候选。<strong>决策：</strong>恢复最新Bureau/Inquiry重评；对高多头限制提额；优质复借保留自动化。<strong>结果：</strong>两个成熟Cycle后看FPD7、MOB1 DPD30+、EL和Margin。</p>
+<p><strong>6）诊断逻辑：</strong>①确认Re-underwrite分母；②检查Score/Bureau/Inquiry/Device是否更新；③看Prior DPD/Cure；④拆Limit Increase与Term；⑤连接Repeat Bad/EL/Margin。</p>
+<p><strong>7）策略动作：</strong>高Approval+Bad恶化→收准入/限额；技术No-hit→重试/Fallback而非直接信用拒绝；优质老客可简化流程；高风险账户变化则增加Step-up/KYC。</p>
+<p><strong>8）常见误区：</strong>Eligibility=Approval；预授信=最终批准；只看首贷还清而不看最新多头；技术失败计入信用拒绝；不同Cycle直接横比。</p>
+<p><strong>9）推荐拆分维度：</strong>Cycle、Prior DPD、Score、Inquiry/Multi-Borrowing、Limit Increase%、Term、Days-since-payoff、Channel、Device、Strategy Version。</p>
+<p><strong>10）预警方式：</strong>同Cycle、同成熟Vintage建立基线；Approval快速上升且Average/P90 EAD、Repeat Bad、EL同步恶化可作为内部黄灯；Margin转负作为红灯候选。</p>
+<p><strong>11）与其他指标关系：</strong><span class="formula">Eligibility → Re-underwrite → Repeat Approval → Limit/EAD → Repeat FPD/Bad → EL → LTV</span></p>
+<details><summary>12）小练习与答案</summary><p>复借审批从90%升到95%，件数FPD7只+0.5pp，但Avg EAD +40%、金额FPD +5pp。能否判断策略更好？</p><p><strong>答案：</strong>不能。金额风险明显放大，应优先拆Limit/EAD和EL。</p></details></div>
+
+<div class="card metric"><h2>Repeat Bad Rate@MOB / Cycle Bad Rate｜复借周期坏账率</h2>
+<p><strong>1）指标是什么：</strong>同一个复借Cycle、同一个MOB/成熟窗口中，达到统一Bad定义的账户或金额比例。大白话：<strong>第2借/第3借在同样年龄时到底坏了多少。</strong></p>
+<p><strong>2）为什么重要：</strong>是成熟信用表现指标，用来判断复借策略、提额和Cycle选择是否真正改善风险。它能避免高速增长和幸存者选择掩盖风险。</p>
+<p><strong>3）精确定义与公式：</strong><span class="formula">Repeat Bad Rate(cycle c, MOB m) = 同Cycle c、同MOB m达到Bad定义的成熟账户 ÷ 同Cycle c、同MOB m成熟账户</span>金额口径以固定Origination Exposure或Outstanding分母计算；固定Bad Definition、Cycle、MOB、展期/重组、件数/金额和唯一账户。</p>
+<p><strong>4）如何看高低：</strong>通常越低越好，但后续Cycle经过筛选会天然看起来更优；提额后件数Bad可能不变而金额Bad上升。因此要联合EAD、EL和Contribution Margin。</p>
+<p><strong>5）墨西哥七步案例：</strong><strong>背景：</strong>Cycle3对连续结清用户提额。<strong>数据：</strong>Cycle2 N=3,850，Avg EAD2,100，MOB1件数Bad10%、金额12%；Cycle3 N=2,100，Avg EAD2,700，MOB1件数Bad11%、金额18%；低Score×Limit≥3,000金额Bad25%；Cycle3 Margin/loan 120。<strong>现象：</strong>件数Bad仅+1pp，金额Bad却+6pp。<strong>拆解：</strong>First Score×Cycle×Limit×Prior DPD×Channel。<strong>根因：</strong>EAD增长是重要驱动，但还需控制客群选择和策略版本。<strong>决策：</strong>低Score限制提额，中高Score继续Challenger。<strong>结果：</strong>看MOB1/2、EL/Loan和累计LTV。</p>
+<p><strong>6）诊断逻辑：</strong>①固定Cycle/MOB和成熟度；②件数vs金额；③Score/Limit/EAD；④Prior DPD/Cure和Channel；⑤Roll/Cure/EL/Margin。</p>
+<p><strong>7）策略动作：</strong>金额Bad恶化且件数稳定→优先降额；PD/件数同时恶化→复借重评/准入收紧；Payment/技术异常→先修支付；催收/Cure问题→调整贷后而非贷前一刀切。</p>
+<p><strong>8）常见误区：</strong>不同MOB直接比较；Cycle2和Cycle5直接比较；只看件数；忽略幸存者偏差；首贷/复借Bad定义不一致；新Cycle样本过小。</p>
+<p><strong>9）推荐拆分维度：</strong>First Vintage、Cycle、MOB、First Score、Current Score、Limit、Term、Prior DPD、Days-since-payoff、Channel、Region、Strategy。</p>
+<p><strong>10）预警方式：</strong>优先同Cycle同MOB，并设置最小样本量与金额门槛；连续两个成熟Cohort的Amount Bad超出自身历史稳定区间且EL同步恶化，可升级内部红灯候选。</p>
+<p><strong>11）与其他指标关系：</strong><span class="formula">Repeat Approval / Limit → EAD + Bad@MOB → EL → Cycle Margin → Cumulative LTV</span></p>
+<details><summary>12）小练习与答案</summary><p>Cycle3件数Bad从10%到10.5%，金额Bad从12%到18%，Avg EAD从2,000到2,800。风险稳定吗？</p><p><strong>答案：</strong>不能判断稳定。金额暴露显著恶化，应优先拆Limit/EAD。</p></details></div>
+
+<div class="card metric"><h2>Risk-adjusted LTV / LTV:CAC｜风险调整客户终身价值</h2>
+<p><strong>1）指标是什么：</strong>客户在多个贷款Cycle中产生的收入，扣除Funding、Expected/Actual Loss、运营/服务/催收、增量营销等成本后的累计经济价值；LTV:CAC衡量该价值相对初始获客成本的覆盖能力。大白话：<strong>这个客户从第一借到后续借款，成熟后到底为公司贡献了多少净价值。</strong></p>
+<p><strong>2）为什么重要：</strong>经营/利润类滞后指标，把首贷、复借、风险、催收和获客统一成同一语言。首贷亏损并不一定是坏生意，如果成熟复借LTV足够高；反之首贷盈利也可能被后续高EAD坏账吃掉。</p>
+<p><strong>3）精确定义与公式：</strong><span class="formula">Risk-adjusted LTV_N = Σ[Revenue − Funding − EL(or mature Credit Loss) − Variable/Servicing/Collection Cost − Incremental Incentive]_cycle</span><span class="formula">LTV:CAC = Risk-adjusted LTV ÷ Initial Acquisition CAC</span>是否折现、是否使用EL还是成熟Actual Loss、是否扣固定成本、初始CAC是否已经在Cycle Contribution里扣除，都必须统一；禁止重复扣CAC。</p>
+<p><strong>4）如何看高低：</strong>通常高更好，但未来Cycle未成熟时会受到删失/预测偏差；高LTV可能来自高价格、高风险且尾部损失尚未成熟。因此需要成熟Cohort和LTV置信区间/敏感度。</p>
+<p><strong>5）墨西哥七步案例：</strong><strong>背景：</strong>10,000首贷用户跟踪3个Cycle。<strong>数据：</strong>Cycle1总风险调整贡献800k；Cycle2 3,850人×135=519.75k；Cycle3 2,100人×120=252k；三Cycle合计1.57175m，约157.2/首贷用户；初始CAC=90，因此LTV:CAC≈1.75。Channel C低Score高Limit未来Bad和催收成本更高。<strong>现象：</strong>整体LTV看似可覆盖CAC，但子Segment差异大。<strong>拆解：</strong>Channel×First Score×Cycle×Limit×Funding Source。<strong>根因：</strong>复借留存、EAD和Bad共同决定LTV。<strong>决策：</strong>削减低LTV渠道/高风险提额，保留高LTV稳定复借。<strong>结果：</strong>随着Bad/Recovery成熟持续重估LTV。</p>
+<p><strong>6）诊断逻辑：</strong>①检查首贷Cohort删失/成熟；②Revenue与价格；③Funding/CAC/优惠；④EL/Actual Loss/Recovery；⑤Cycle Retention/Repeat；⑥Cum LTV与资本占用。</p>
+<p><strong>7）策略动作：</strong>低LTV高CAC渠道降量/调投放；高Repeat低LTV客户减少优惠或限额；Funding拖累则调整资金来源；高LTV低Repeat优先优化产品体验/召回；尾部LGD高则先改贷后。</p>
+<p><strong>8）常见误区：</strong>Gross Revenue=LTV；未来未成熟损失按0；初始CAC重复扣；忽略复借营销、服务、催收成本；只看平均LTV不看分布；幸存者偏差；不同观察窗口横比。</p>
+<p><strong>9）推荐拆分维度：</strong>Acquisition Channel、Campaign、First Vintage、First Score、Cycle、Limit、Term、Region、Funding Source、Coupon/Promo、Strategy Version。</p>
+<p><strong>10）预警方式：</strong>同首贷Vintage、同生命周期窗口、同成熟度比较，设置最低用户数；成熟LTV/CAC持续低于公司内部资本/固定成本盈亏线时升级，不引用所谓行业统一1.5/3.0阈值。</p>
+<p><strong>11）与其他指标关系：</strong><span class="formula">CAC → First-loan Margin → Repeat Rate / Approval → Cycle EAD & Bad → Recovery → Risk-adjusted LTV → LTV:CAC → Channel/Portfolio Allocation</span></p>
+<details><summary>12）小练习与答案</summary><p>三Cycle的每首贷用户风险调整价值为180，初始CAC=120，则LTV:CAC是多少？能否仅凭1.5判断业务一定优秀？</p><p><strong>答案：</strong>1.5。不能；还要看资本占用、固定成本、成熟度、未来尾部损失和公司目标回报。</p></details></div>
+
+<p class="muted">本页数字为训练分析逻辑的模拟案例，不构成行业阈值或个别授信建议。</p></body></html>
