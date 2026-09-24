@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>2026-09-24 应用商店情报日报</title><style>body{font-family:Arial,"Microsoft YaHei",sans-serif;line-height:1.7;color:#1f2937;max-width:980px;margin:0 auto;padding:32px}h1{color:#0f172a}h2{border-left:4px solid #2563eb;padding-left:10px} .tag{display:inline-block;padding:2px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;margin-right:6px;font-size:12px}.risk{background:#fff7ed;padding:14px;border-left:4px solid #f97316}.ok{background:#f0fdf4;padding:14px;border-left:4px solid #22c55e}.src{font-size:13px}.footer{margin-top:28px;padding-top:18px;border-top:1px solid #ddd}</style></head>
+<body>
+<h1>2026-09-24 应用商店情报日报</h1>
+<p><span class="tag">今日结论</span>截至 2026 年 9 月 24 日，未发现 Google Play、Apple App Store 或墨西哥监管侧今天新发布、且直接改变墨西哥现金贷 APP 上架、审核、贷款披露或敏感权限口径的重大强制政策。当前最高优先级仍是 <b>Google Play 开发者验证与 package 注册，距离 2026-09-30 仅剩 6 天</b>。</p>
+
+<h2>今日新增</h2>
+<div class="ok"><b>Google Play Status Dashboard：No incidents</b><br>官方页面显示截至 2026-09-24 02:13 UTC 为 No incidents，但该 Dashboard 仍是针对部分 Play developer products 的试点，当前主要覆盖 Play Billing、Publishing API、Play Integrity 等。它可以作为“已覆盖产品的事故信号”，不能单独证明审核队列、人工审核或全部 Play Console 正常。</div>
+<p class="src">官方原文：<a href="https://status.play.google.com/">Google Play Status Dashboard</a></p>
+
+<p><b>Apple App Store Connect：</b>当前最新实质更新仍为 2026-09-18：Xcode 27.1 beta + iOS 27.1 beta / iPadOS 27.1 beta 可用于 TestFlight 内外部测试；2026-09-14 起 Xcode 27 + 27.0 SDK 可用于 App Store 正式上传。当前没有看到新的生产提审工具链公告。</p>
+<p class="src">官方原文：<a href="https://developer.apple.com/help/app-store-connect/release-notes/">App Store Connect Release Notes</a></p>
+
+<h2>政策变化与高风险提醒</h2>
+<div class="risk"><b>P0｜Google Play package 注册 T-6</b><br>Google 官方要求在 2026-09-30 前完成 package 注册。历史换签、多 signing key、App Transfer、低安装量包应逐包核验，不要仅依赖自动注册比例。建议保留 registration_status、identity_verified、current_cert_sha256、historical_keys、owner、last_verified_at。</div>
+<p class="src">官方原文：<a href="https://support.google.com/googleplay/android-developer/answer/15544996">Android developer verification / package registration</a></p>
+
+<p><b>金融/信贷：</b>Google 当前仍要求所有已发布到 Google Play 的 APP 完成 Financial features declaration，包括 closed testing、open testing 和 production；没有金融功能也必须明确声明。个人贷款相关 APP 需要说明合作贷款机构与开发者业务关系，并确保账号与资质材料可验证关联。</p>
+<p class="src">官方原文：<a href="https://support.google.com/googleplay/android-developer/answer/15633622">Financial features declaration</a> · <a href="https://support.google.com/googleplay/android-developer/answer/16363415">Financial Services policy</a></p>
+
+<p><b>敏感权限：</b>贷款类 APP 继续重点检查联系人、精确位置、照片/视频、电话号码、QUERY_ALL_PACKAGES 等能力；检查对象必须是最终 merged Manifest + SDK 传递权限，而不是只看业务源码。</p>
+<p class="src">官方原文：<a href="https://support.google.com/googleplay/android-developer/answer/16561359">Personal loan policy</a></p>
+
+<p><b>Apple 贷款规则：</b>个人贷款 APP 仍需清晰显著披露贷款条款、最大等效 APR 和付款到期日；最大 APR 不得高于 36%（含成本和费用），且不得要求 60 天或以内全额偿还。</p>
+<p class="src">官方原文：<a href="https://developer.apple.com/app-store/review/guidelines/">App Review Guidelines</a></p>
+
+<h2>墨西哥动态</h2>
+<p>今天未发现新的全国现金贷 APP 上架、牌照或应用商店专项规则。RECA 仍可用于查询标准合同登记；证据表述继续保持边界：RECA 登记不当然等于 CONDUSEF 已完成实质审查或批准。对墨西哥 APP，继续维护 Store Developer/Seller × SIPRES/PUR × RECA × 合同主体 × 资金方 × 官网 × 客服 × 品牌授权 × 实际产品配置的一致性链路。</p>
+<p class="src">官方原文：<a href="https://reca.condusef.gob.mx/">CONDUSEF RECA</a> · <a href="https://www.gob.mx/condusef">CONDUSEF</a></p>
+
+<h2>今日新增长期知识</h2>
+<p><b>《平台状态信号的“可覆盖范围”门禁》</b>：把任何平台状态源拆成三种属性：coverage（覆盖哪些产品）、freshness（最后更新时间）、authority（官方/非官方）。只有 coverage 与当前异常对象匹配时，才允许将其作为归因证据；否则统一记录为 PLATFORM_STATUS_NOT_CONCLUSIVE。这样可以避免把“Play Status Dashboard No incidents”误判成“审核队列正常”。</p>
+<p>建议字段：platform、product_scope、status、checked_at_utc、source_url、coverage_note、incident_match、confidence_level、next_check_at。</p>
+
+<h2>产品/研发影响</h2>
+<ul><li>Android：将 package 注册状态、merged Manifest、SDK inventory、Financial features declaration 与构建产物 hash 绑定。</li><li>iOS：生产 CI 继续使用明确获准的稳定版工具链；Xcode 27.1 beta 仅进入 TestFlight 实验线。</li><li>审核监控：拆分平台状态、Build Processing、审核生命周期、审核账号访问、自有后端健康度五类指标。</li></ul>
+
+<h2>建议动作</h2>
+<ol><li>今天清零 Play package T-6 异常包。</li><li>下一次提审前生成 Build 级 Evidence Manifest + SHA-256。</li><li>重新核对 Financial features declaration 与真实资金方、合同主体、用户流程和 Store listing。</li><li>刷新 Mexico 的 SIPRES/PUR、RECA、商店主体、资金方、合同、官网、客服和品牌授权证据。</li><li>接入 Apple Build Processing 24h 升级规则与 Google Status coverage note。</li></ol>
+
+<div class="footer"><p>固定入口：</p><ul><li><a href="https://xuya606-ui.github.io/financial-risk-ai-daily/app-store-intelligence/">正式知识库首页</a></li><li><a href="https://xuya606-ui.github.io/financial-risk-ai-daily/app-store-intelligence/knowledge-base.html">长期知识库详情页</a></li><li><a href="https://xuya606-ui.github.io/financial-risk-ai-daily/app-store-intelligence/workbench.html">合规工作台</a></li></ul></div>
+</body></html>
